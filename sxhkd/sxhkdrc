@@ -1,0 +1,209 @@
+# Config file for simple X hotkey daemon
+
+
+# Apps and programs
+
+# Open web browser
+control+alt+w
+    firefox-esr	
+
+# Open terminal
+super+Return
+    wezterm
+
+control+alt+t  
+    wezterm
+
+# Open file manager	
+control+alt+f 
+	thunar 
+
+# Toggle picom
+super+p
+    [[ `pgrep -c picom` -eq 0 ]] && picom || killall picom
+    
+
+# Rofi 
+
+# Launch apps
+super+shift+e 
+	~/.config/.bscripts/rofi.sh drun	
+
+# Window switcher for each workspace
+alt+Tab
+	~/.config/.bscripts/rofi.sh window
+
+# Logout options
+super+shift+q
+    ~/.config/.bscripts/rofi.sh outopts
+
+
+# Utilities
+
+# Reload sxhkd configuration
+super+r
+    kill -SIGUSR1 `pidof sxhkd`
+
+# Screenshot (uses flameshot)
+Print  
+	~/.config/.bscripts/ss.sh
+super+shift+s 
+	~/.config/.bscripts/ss.sh
+
+# Delayed screenshot
+super+Print
+    sleep 3 && ~/.config/.bscripts/ss.sh
+
+# Color picker
+control+alt+c
+	echo -n	`colorpicker --short --one-shot` | xclip -selection "clipboard"
+
+# Locks the pc (uses mantablockscreen)
+super+q
+	~/.config/.bscripts/lock.sh
+
+# Change keyboard layout
+super+space 
+    ~/.config/eww/mybar/scripts/kb_layouts cycle it us
+
+
+# Window and workspace shenanigans
+
+# Close bspwm node
+super+w
+    bspc node -c
+
+# Kill window 
+alt+F4 
+	xdotool getwindowfocus windowclose
+
+# Move window to the next workspace
+control+period
+	~/.config/.bscripts/wpm_reports.sh move +1
+
+# Move window to the previous workspace
+control+comma
+	~/.config/.bscripts/wpm_reports.sh move -1
+
+# Go to the next workspace
+control+alt+period
+	~/.config/.bscripts/wpm_reports.sh select +1
+
+# Go to previous workspace
+control+alt+comma
+	~/.config/.bscripts/wpm_reports.sh select -1
+
+# Go to workspaces 1 through 5
+super+{1,2,3,4,5}
+	~/.config/.bscripts/wpm_reports.sh jump {0,1,2,3,4}
+
+
+# Media controls
+
+# Raise the volume by 5%
+alt+period
+	~/.config/.bscripts/volume.sh up
+XF86AudioRaiseVolume 
+    ~/.config/.bscripts/volume.sh up
+
+# Lower the volume by 5%
+alt+comma 
+	~/.config/.bscripts/volume.sh down
+XF86AudioLowerVolume 
+    ~/.config/.bscripts/volume.sh down
+
+# Toggle audio mute
+alt+m
+	~/.config/.bscripts/volume.sh mute 
+XF86AudioMute
+    ~/.config/.bscripts/volume.sh mute  
+
+# Toggle media playing
+Pause
+	playerctl play-pause
+XF86AudioPlay
+	playerctl play-pause
+XF86AudioPause 
+	playerctl play-pause
+
+# Go to next media content
+XF86AudioNext
+	playerctl next
+
+# Go to previous media content
+XF86AudioPrev
+	playerctl previous
+
+	
+# EWW stuff
+
+# Toggle bar 
+control+alt+e
+	~/.config/.bscripts/toggle_bar.sh auto
+
+# Music popup
+super+m 
+	~/.config/eww/mybar/scripts/popup_music
+
+
+# BSPWM stuff
+
+# Cycle layouts (tiled and monocle)
+super+s
+    bspc desktop focused --layout next
+
+# Toggle floating windows
+control+alt+space
+	~/.config/.bscripts/toggle_winprops.sh float
+
+# Move windows in workspace
+super+shift+{k,j,h,l}
+	play -v 0.4 ~/.config/rice_assets/Sounds/tile.wav& ~/.config/.bscripts/bsmove.sh {north,south,west,east}
+
+# Select windows in workspace
+super+{k,j,h,l}
+	~/.config/.bscripts/bselect.sh {north,south,west,east}
+	
+# Grow windows
+super+alt+l
+	bspc node focused -z right 15 0
+super+alt+h
+	bspc node focused -z left -15 0
+super+alt+k
+	bspc node focused -z top 0 -15
+super+alt+j
+	bspc node focused -z bottom 0 15
+
+# Shrink windows
+control+shift+h
+	bspc node focused -z right -15 0
+control+shift+l
+	bspc node focused -z left 15 0
+control+shift+j
+	bspc node focused -z top 0 15
+control+shift+k
+	bspc node focused -z bottom 0 -15
+
+# Rotate tree
+super+{d,a}
+	play -v 0.4 ~/.config/rice_assets/Sounds/tile.wav& bspc node @/ -C {forward,backward}
+
+# Rotate windows 
+alt+{d,a}
+	play -v 0.4 ~/.config/rice_assets/Sounds/tile.wav& bspc node first_ancestor -R {90,270}
+
+# Equalize window sizes
+super+e
+	play -v 0.4 ~/.config/rice_assets/Sounds/tile.wav& bspc node first_ancestor --balance 
+
+# Toggle fullscreen
+super+f
+	~/.config/.bscripts/toggle_winprops.sh fullscreen
+
+# Preselect direction for next window
+control+alt+{k,j,h,l}
+	bspc node --presel-dir \~{north,south,west,east}
+
+# Cycle through window layers (above, normal or below)
+control+alt+a
+	~/.config/.bscripts/toggle_winprops.sh layer
