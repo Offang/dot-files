@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# Compositor
+picom &
+
+xrandr --output DP-0 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-2 --mode 1920x1080 --pos 1920x0 --rotate normal
+
+# Set cursor
+xsetroot -cursor_name left_ptr &
+
+# Set keyboard repeat rate
+xset r rate 200 25
+
+# Set Wallpaper
+nitrogen --restore
+
+# Cache lockscreen 
+mantablockscreen -i ~/.config/rice_assets/Images/lockscreen.png&
+
+# Authentication agent
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1&
+
+# Start GPU fans
+nvidia-settings -a GPUFanControlState=1 -a GPUTargetFanSpeed=35
+
+# Statusbar
+killall workspaces    
+killall media_info    
+killall layout  
+eww -c /home/gnaffo/.config/eww/mybar kill 
+eww -c /home/gnaffo/.config/eww/mybar daemon    
+eww open-many bar_left bar_center bar_right -c /home/gnaffo/.config/eww/mybar
+NB_MONITORS=$(bspc query --monitors | wc -l)
+if [ "$NB_MONITORS" -eq "2" ]; then
+    eww open-many bar_left_2 bar_center_2 bar_right_2 -c /home/gnaffo/.config/eww/mybar
+fi
+killall polybar
+# refresh right bar before displaying polybar
+xdotool search --sync --onlyvisible --class "eww-bar_right" 
+polybar -c ~/.config/eww/mybar/polybar_tray.ini tray&
+
+#Applets
+killall pa-applet
+killall nm-applet
+killall flameshot
+pa-applet --disable-key-grabbing --disable-notifications& 
+nm-applet&
+flameshot&
+    
+# daemons
+killall dunst
+dunst > /dev/null 2> /dev/null &
+thunar --daemon&
+killall sxhkd
+sxhkd -c ~/.config/sxhkd/sxhkdrc > /dev/null 2> /dev/null&
+
+# Window event monitoring
+killall winevents.sh
+~/.config/.bscripts/winevents.sh&
+
+# Autosuspend
+killall idle.sh
+pgrep idle.sh || ~/.config/.bscripts/idle.sh > /dev/null 2> /dev/null&
+
+gammastep -x && gammastep -p -O 3500 -m randr
