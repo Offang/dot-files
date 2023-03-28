@@ -1,0 +1,42 @@
+#!/bin/sh
+
+if [[ -s "/tmp/eww-disk" ]]; then
+    disk=`cat /tmp/eww-disk`
+else
+    disk='/'
+    `echo 'root' > /tmp/eww-disk`
+fi
+
+if [[ $disk == 'root' ]]; then
+    disk='/'
+fi
+if [[ $disk == 'home' ]]; then
+    disk='/home'
+fi
+
+raw=`df -h $disk | grep /dev/`
+case $1 in
+    "--used" )
+        value=`echo $raw | awk '{printf $3}'`
+        ;;
+    "--all" )
+        value=`echo $raw | awk '{printf $2}'`
+        ;;
+    "--free" )
+        value=`echo $raw | awk '{printf $4}'`
+        ;;
+    "--toggle" )
+        if [[ -s "/tmp/eww-disk" ]]; then
+            if [[ `cat /tmp/eww-disk` == 'root' ]]; then
+                `echo 'home' > /tmp/eww-disk`
+            else
+                `echo 'root' > /tmp/eww-disk`
+            fi
+        fi
+        ;;
+    * )
+        true
+        ;;
+esac
+value=${value::-1}
+echo $value

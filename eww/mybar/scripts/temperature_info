@@ -1,0 +1,24 @@
+#!/bin/sh
+if [[ $1 == '--toggle' ]]; then
+    if [[ `cat /tmp/eww-temp` == 'CPU:' ]]; then
+        `echo 'GPU:' > /tmp/eww-temp`
+    else
+        `echo 'CPU:' > /tmp/eww-temp`
+    fi
+fi
+
+if [[ -s "/tmp/eww-temp" ]]; then
+    temp_current=`cat /tmp/eww-temp`
+else
+    temp_current='CPU:'
+    `echo 'CPU:' > /tmp/eww-temp`
+fi
+
+if [[ $temp_current == 'CPU:' ]]; then
+    temp=$(sensors | grep 'Package id 0:\|Tdie' | grep ':[ ]*+[0-9]*.[0-9]*°C' -o | grep '[0-9]*.[0-9]*°C' -o | awk '{print substr($1, 1, length($1)-2)}')
+    temp=${temp[::-2]}
+else
+    temp=$(nvidia-smi -q -d temperature | grep "GPU Current Temp" | awk '{print $5}')
+fi
+
+echo "$temp"

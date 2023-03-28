@@ -1,0 +1,6 @@
+#!/bin/sh
+eww="eww -c $HOME/.config/eww/mybar"
+
+$eww close settings || (\
+    $eww open settings ) 
+

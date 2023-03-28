@@ -1,0 +1,32 @@
+#!/bin/sh
+
+case $1 in
+    "--hour")
+        date "+%H"
+        ;;
+    "--minutes")
+        date "+%M"
+        ;;
+    "--seconds")
+        date "+%S"
+        ;;
+    "--type")
+        date "+%p"
+        ;;
+    "--date")
+        date "+ %a, %b %d"
+        ;;
+    "--day")
+        date "+%d"
+        ;;
+    "--month")
+        $(( `date "+%m"` -1 ))
+        ;;
+    "--year")
+        date "+%Y"
+        ;;
+    *)
+        true
+        ;;
+esac
+
