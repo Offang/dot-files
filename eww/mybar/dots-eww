@@ -1,0 +1,25 @@
+eww.scss
+fonts:
+    Iosevka Curly
+    Nova Mono
+    Caskaydia Cove Nerd Font
+eww.yuck
+scripts:
+    ~/.bscripts/rofi.sh outops&
+    scripts/media_control
+    scripts/popup_music
+    scripts/time_info
+    scripts/battery_info
+        font:
+            Iosevka Curly
+        dependencies:
+            acpi
+    scripts/ram_info
+    scripts/temperature_info
+    scripts/disk_info
+    scripts/cpu_info
+    scripts/layout
+    scripts/workspaces
+colors.scss
+wallpaper:
+    /home/kz87/.config/wpg/wallpapers/wallpaper.png

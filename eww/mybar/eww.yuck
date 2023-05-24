@@ -55,6 +55,19 @@
 (defvar wp4 "○")
 (defvar layout_button "")
 (defvar settings_button "")
+;(defvar audio_button "")
+;"default": ["", "", ""]
+;"pulseaudio#microphone": {
+;        "format": "{format_source}",
+;        "tooltip": false,
+;        "format-source": " {volume}%",
+;        "format-source-muted": " Muted",
+;        "on-click": "pamixer --default-source -t",
+;        "on-scroll-up": "pamixer --default-source -i 5",
+;        "on-scroll-down": "pamixer --default-source -d 5",
+;        "scroll-step": 5
+;    },
+
 (defvar media_status "")
 (defvar artist "No artist")
 (defvar artist_parsed "No artist") 
@@ -72,6 +85,7 @@
 (deflisten launch3 "scripts/media_info")
 (deflisten launch4 "scripts/cpu_info")
 
+;;(defpoll cpu_percent :interval "1s" "scripts/cpu_info")
 (defpoll disk_current_poll :interval "1s" "cat /tmp/eww-disk")
 (defpoll disk_all :interval "1s" "scripts/disk_info --all")
 (defpoll disk_used :interval "1s" "scripts/disk_info --used")
@@ -232,6 +246,7 @@
 
 ;; Settings window
 (defwindow settings
+  :monitor "DP-0"
   :class settings
   :geometry 
     (geometry
@@ -319,6 +334,82 @@
     )
   )
 )
+
+;;(defwidget audio []
+;;  (box
+;;    :orientation "h"
+;;    :valign "start"
+;;    :halign "start
+;;    (eventbox
+;;      :cursor "pointer"
+;;      (button
+;;        :onlick ""
+;;        :class "workspace_button"
+;;        :tooltip "Adjust audio level"
+;;        :class "nextprev_popup"
+;;        ""
+;;      )
+;;    )
+;;    (eventbox
+;;      :cursor "pointer"
+;;      (box
+;;        :orientation "h"
+;;        :valign "fill"
+;;        :halign "fill"
+;;        (scale
+;;          :min 0
+;;          :max length
+;;          :value current_audio 
+;;          :orientation "h"
+;;        )
+;;      )
+;;    )
+;;  )
+;;)
+;;  (eventbox
+;;   :class "audio_popup"
+;;   :orientation "v"
+;;   :valign "fill"
+;;   :halign "fill"
+;;   (eventbox
+;;    :cursor "pointer"
+;;    (button
+;;     :onclick "scripts/media_control --prev"
+;;     :class "nextprev_popup"
+;;     :tooltip "Previous"
+;;     ""))
+;;  (scale
+;;    :min 0
+;;    :max 100
+;;    :value current_audio
+;;    :orientation "h"
+;;    :tooltip "Seek"
+;;    :onchange "scripts/media_control --seek {} ${media_bar_is_active}"
+;;   )
+;;  )
+;;  (eventbox
+;;    :class "microphone_popup"
+;;    :orientation "v"
+;;    :valign "fill"
+;;    :halign "fill"
+;;    (eventbox
+;;     :cursor "pointer"
+;;     (button
+;;      :onclick "scripts/media_control --prev"
+;;      :class "nextprev_popup"
+;;      :tooltip "Previous"
+;;      ""))
+;;    (scale
+;;     :min 0
+;;     :max 100
+;;     :value current_microphone
+;;     :orientation "h"
+;;     :tooltip "Seek"
+;;     :onchange "scripts/media_control --seek {} ${media_bar_is_active}"
+;;    )
+;;
+;;  ))
+
 ;; Music window
 (defwindow music
   :geometry
@@ -501,6 +592,22 @@
               :class "workspace_buttons")))
       )))
 
+ ;; (defwidget settings []
+ ;;   (box 
+ ;;     :orientation "h"
+ ;;     :halign "start"
+ ;;     (box 
+ ;;       :orientation "h"
+ ;;       :space-evenly "false"
+ ;;       (eventbox 
+ ;;         :cursor "pointer"
+ ;;         (button
+ ;;           :tooltip "System settings"
+ ;;           :onclick ".scripts/popup_settings"
+ ;;           (label
+ ;;             :class "settings"
+ ;;             :text settings_button)))
+ ;;     )))
 
   (defwidget layout []
     (box 
@@ -643,6 +750,7 @@
         (ram_status)
         (temperature_status)
         (disk_status)
+        ;;(battery_status)
         ))))
 
 

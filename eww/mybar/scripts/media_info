@@ -29,7 +29,7 @@ update_cover () {
 	elif [[ `echo $newimg | grep -c "file://"` -gt 0 ]]
 	then
 		cp "`echo $newimg | sed 's/file:\/\///g'`" "$imgdir/currmedia.png"
-		echo "Image is a file, successfully copied"
+		echo "Image is a file, succesfully copied"
 	else
 		echo "Image is an url, trying to download..."
 		curl "$newimg" -o "/tmp/currmedia.png" -s --max-time 5
@@ -37,7 +37,7 @@ update_cover () {
 		then
 			#convert "/tmp/currmedia.png" -resize 130x130 "$imgdir/currmedia.png"
 			cp /tmp/currmedia.png "$imgdir/currmedia.png"
-			echo "Image successfully downloaded"
+			echo "Image succesfully downloaded"
 		else
 			cp "$imgdir/music.png" "$imgdir/currmedia.png"
 			echo "Failed to download image, using template"
